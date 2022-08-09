@@ -560,7 +560,7 @@ function App() {
                           />
                         </div>
                         <div className="testimonial-content">
-                          <p className="text">{item.discription}</p>
+                          <p className="text">{item.description}</p>
                           <h6 className="author-name">{item.name}</h6>
                           <span className="sub-title">{item.post}</span>
                         </div>
