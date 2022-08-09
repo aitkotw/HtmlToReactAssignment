@@ -1,8 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import "./App.css";
 import headerBg from "./assets/images/header-bg.jpg";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
+  const url = "http://localhost:4000";
+  const [loading, setLoading] = useState(true);
+  const [testimony, setTestimony] = useState(null);
+  console.log(testimony);
+
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(`${url}/api/testimony`);
+      setTestimony(result.data);
+      setLoading(false);
+    } catch (error) {
+      console.log("Unable to fetch data");
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [loading]);
+
   return (
     <div className="App">
       <header className="header-area">
@@ -527,88 +548,27 @@ function App() {
           </div>
           <div className="row">
             <div className="col-lg-12">
-              <div className="row testimonial-active">
-                <div className="col-lg-4">
-                  <div className="single-testimonial mt-30 mb-30 text-center">
-                    <div className="testimonial-image">
-                      <img
-                        src={require("./assets/images/author-3.jpg")}
-                        alt="Author"
-                      />
+              {!loading ? (
+                <div className="row testimonial-active">
+                  {testimony.map((item, index) => (
+                    <div className="col-lg-4" key={index}>
+                      <div className="single-testimonial mt-30 mb-30 text-center">
+                        <div className="testimonial-image">
+                          <img
+                            src={`${url}/images/${item.photo}`}
+                            alt="Author"
+                          />
+                        </div>
+                        <div className="testimonial-content">
+                          <p className="text">{item.discription}</p>
+                          <h6 className="author-name">{item.name}</h6>
+                          <span className="sub-title">{item.post}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="testimonial-content">
-                      <p className="text">
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                      </p>
-                      <h6 className="author-name">Isabela Moreira</h6>
-                      <span className="sub-title">CEO, GrayGrids</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-                <div className="col-lg-4">
-                  <div className="single-testimonial mt-30 mb-30 text-center">
-                    <div className="testimonial-image">
-                      <img
-                        src={require("./assets/images/author-1.jpg")}
-                        alt="Author"
-                      />
-                    </div>
-                    <div className="testimonial-content">
-                      <p className="text">
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                      </p>
-                      <h6 className="author-name">Fiona</h6>
-                      <span className="sub-title">Lead Designer, UIdeck</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="single-testimonial mt-30 mb-30 text-center">
-                    <div className="testimonial-image">
-                      <img
-                        src={require("./assets/images/author-2.jpg")}
-                        alt="Author"
-                      />
-                    </div>
-                    <div className="testimonial-content">
-                      <p className="text">
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                      </p>
-                      <h6 className="author-name">Elon Musk</h6>
-                      <span className="sub-title">CEO, SpaceX</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="single-testimonial mt-30 mb-30 text-center">
-                    <div className="testimonial-image">
-                      <img
-                        src={require("./assets/images/author-4.jpg")}
-                        alt="Author"
-                      />
-                    </div>
-                    <div className="testimonial-content">
-                      <p className="text">
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                        Stop wasting time and money designing and managing a
-                        website that doesn’t get results. Happiness guaranteed!
-                      </p>
-                      <h6 className="author-name">Fajar Siddiq</h6>
-                      <span className="sub-title">CEO, MakerFlix</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ) : null}
             </div>
           </div>
         </div>
